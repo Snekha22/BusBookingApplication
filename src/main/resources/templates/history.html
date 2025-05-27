@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History - Bus Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-700 to-cyan-800">
+    <nav class="bg-gray-800 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white text-2xl font-bold">BookYourBus</div>
+            <div class="flex space-x-6">
+                <a th:href="@{/search}" class="text-gray-300 hover:text-white transition duration-200">
+                    Book Ticket
+                </a>
+                <a th:href="@{/history}" class="text-gray-300 hover:text-white transition duration-200">
+                    Booking History
+                </a>
+                <a th:href="@{/profile}" class="text-gray-300 hover:text-white transition duration-200">
+                    Profile
+                </a>
+                <a th:href="@{/logout}" class="text-red-400 hover:text-red-200 transition duration-200">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="p-4">
+        <h2 class="text-4xl font-extrabold text-white text-center mb-10 pt-8">Your Booking History</h2>
+
+        <div th:if="${bookings.isEmpty()}" class="text-center text-white text-lg">
+            You have no past bookings.
+        </div>
+
+        <div th:unless="${bookings.isEmpty()}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div th:each="booking : ${bookings}" class="bg-white p-6 rounded-xl shadow-xl flex flex-col justify-between">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2" th:text="'Booking ID: ' + ${booking.id}"></h3>
+                    <p class="text-gray-600 mb-1">Route: <span class="font-semibold" th:text="${booking.route.origin} + ' to ' + ${booking.route.destination}"></span></p>
+                    <p class="text-gray-600 mb-1">Departure: <span class="font-semibold" th:text="${booking.route.departureTime}"></span></p>
+                    <p class="text-gray-600 mb-1">Total Amount: <span class="font-bold text-green-700" th:text="'₹' + ${booking.totalAmount}"></span></p>
+                    <p class="text-gray-600 mb-1">Status: <span class="font-semibold" th:classappend="${booking.status == 'CONFIRMED' ? 'text-green-500' : 'text-red-500'}" th:text="${booking.status}"></span></p>
+                    <p class="text-gray-600 mb-4">Booked On: <span class="font-semibold" th:text="${#temporals.format(booking.bookingDate, 'dd-MM-yyyy HH:mm')}"></span></p>
+                    <h4 class="text-lg font-bold text-gray-700 mb-2">Passengers:</h4>
+                    <ul class="list-disc list-inside text-gray-600">
+                        <li th:each="passenger : ${booking.passengers}" th:text="${passenger.name} + ' (' + ${passenger.gender} + ', ' + ${passenger.age} + ')' + (passenger.seatNumber != null ? ' - Seat: ' + passenger.seatNumber : '')"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -16,7 +16,7 @@ This is a web-based application for booking bus tickets, built using Spring Boot
 - Backend: Spring Boot, Spring Data JPA, Spring Security, JWT
 - Frontend: Thymeleaf, Bootstrap
 - Database: MySQL
-- Testing: JUnit, MockMvc
+
 ---
 ## 📑 Prerequisites
 
